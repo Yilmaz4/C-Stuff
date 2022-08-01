@@ -1,51 +1,58 @@
 #pragma once
 
-template <typename type> class LinkedStack {
-	void* top = nullptr;
+template <typename type> class Stack {
+	void* top_ptr = nullptr;
 	size_t length = 0;
 protected:
 	struct Node {
 		Node(type data, Node* ptr) {
-			this->data = data;
+			this->data = (type*)malloc(sizeof(data));
+			*this->data = data;
 			this->ptr = ptr;
 		}
-		type data;
+		~Node() {
+			free((void*)this->data);
+		}
+		type* data;
 		Node* ptr;
 	};
 public:
-	struct empty_stack_error : public std::exception {
+	struct stack_empty_error : public std::exception {
 		virtual const char* what() const throw() {
 			return "Stack is empty";
 		}
 	};
-	LinkedStack(void) = default;
+	Stack(void) = default;
 
-	void push(type obj) {
-		top = (void*)new Node(obj, (Node*)top);
+	inline void push(type obj) {
+		top_ptr = (void*)new Node(obj, (Node*)top_ptr);
 		length++;
 	}
-	type pop() {
-		if (top == nullptr)
-			throw empty_stack_error();
-		type data = ((Node*)top)->data;
-		Node* addr = ((Node*)top)->ptr;
-		delete top;
-		top = (void*)addr;
+	inline type pop() {
+		if (top_ptr == nullptr)
+			throw stack_empty_error();
+		type data = *((Node*)top_ptr)->data;
+		Node* addr = ((Node*)top_ptr)->ptr;
+		delete top_ptr;
+		top_ptr = (void*)addr;
 		length--;
 		return data;
 	}
-	type get() {
-		if (top == nullptr)
-			throw empty_stack_error();
-		return ((Node*)top)->data;
+	inline type top() {
+		if (top_ptr == nullptr)
+			throw stack_empty_error();
+		return *((Node*)top_ptr)->data;
 	}
-	size_t get_length() const {
+	inline size_t size() const {
 		return length;
 	}
-	friend auto operator << (std::ostream& os, LinkedStack const& obj) -> std::ostream& {
+	inline bool empty() const {
+		return !this->length;
+	}
+	friend auto operator << (std::ostream& os, Stack const& obj) -> std::ostream& {
 		std::cout << "[";
 		index_t i = 0;
-		for (void* addr = obj.top; addr; addr = ((Node*)addr)->ptr, i++)
+		for (void* addr = obj.top_ptr; addr; addr = ((Node*)addr)->ptr, i++)
 			std::cout << ((Node*)addr)->data << ((i == obj.get_length() - 1) ? "" : ", ");
 		std::cout << "]";
 		return os;

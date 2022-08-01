@@ -13,20 +13,22 @@ template <typename type> class SinglyLinkedList {
 protected:
 	struct Node {
 		Node(type data, Node* ptr) {
-			this->data = data;
+			this->data = (type*)malloc(sizeof(data));
+			*this->data = data;
 			this->ptr = ptr;
 		}
 		Node(Node* ptr) {
 			this->ptr = ptr;
 		}
-		type data;
+		type* data;
 		Node* ptr;
 	};
-	struct Proxy {
+	class Proxy {
+		Node* node = nullptr;
+	public:
 		Proxy(Node* node) {
 			this->node = node;
 		}
-		Node* node;
 		Proxy& operator = (type obj) noexcept {
 			node->data = obj;
 			return *this;
@@ -34,7 +36,7 @@ protected:
 	};
 public:
 	struct index_error : public std::exception {
-		virtual const char* what() const throw() {
+		virtual const char* what() const noexcept {
 			return "List index out of range";
 		}
 	};
