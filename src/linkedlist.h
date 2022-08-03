@@ -1,16 +1,11 @@
 #pragma once
 
 #include <iostream>
-#include <format>
 #include <exception>
 
 typedef unsigned long long index_t;
 
 template <typename type> class SinglyLinkedList {
-	void* base_addr = nullptr;
-	void* last_addr = nullptr;
-	size_t length = 0;
-protected:
 	struct Node {
 		Node(type data, Node* ptr) {
 			this->data = (type*)malloc(sizeof(data));
@@ -25,24 +20,39 @@ protected:
 	};
 	class Proxy {
 		Node* node = nullptr;
+		type* base_addr = nullptr;
 	public:
-		Proxy(Node* node) {
+		Proxy(Node* node, type* base_addr) {
 			this->node = node;
+			this->base_addr = base_addr;
 		}
 		Proxy& operator = (type obj) noexcept {
 			node->data = obj;
 			return *this;
 		}
 	};
+	Node* base_addr = nullptr;
+	Node* last_addr = nullptr;
+	size_t length = 0;
 public:
 	struct index_error : public std::exception {
 		virtual const char* what() const noexcept {
 			return "List index out of range";
 		}
 	};
+	struct list_empty_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "List is empty";
+		}
+	};
+	struct element_not_found_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "Specified element was not found in the list";
+		}
+	};
 	SinglyLinkedList(void) = default;
 
-	void* insert(type obj, index_t index) {
+	inline Node* insert(type const& obj, index_t index) {
 		if (!base_addr) {
 			base_addr = new Node(obj, nullptr);
 			last_addr = base_addr;
@@ -52,7 +62,7 @@ public:
 		Node* addr = nullptr;
 		switch (index) {
 		case 0:
-			addr = new Node(obj, (Node*)base_addr);
+			addr = new Node(obj, base_addr);
 			base_addr = addr;
 			length++;
 			return addr;
@@ -65,40 +75,40 @@ public:
 				return addr;
 			}
 			index_t i = 0;
-			for (void* t_addr = this->base_addr; t_addr && i < index + 1; t_addr = ((Node*)t_addr)->ptr, i++) {
+			for (Node* t_addr = this->base_addr; t_addr && i < index + 1; t_addr = t_addr->ptr, i++) {
 				if (i == index) {
 					addr = new Node(obj, nullptr);
-					((Node*)t_addr)->ptr = addr;
+					t_addr->ptr = addr;
 				}
 				else if (i > index)
-					addr->ptr = (Node*)t_addr;
+					addr->ptr = t_addr;
 			}
 			length++;
 			return addr;
 		}
 	}
-	void* append(type obj) {
+	inline Node* push_back(type const& obj) {
 		return this->insert(obj, length);
 	}
-	void remove(type obj) {
-		Node* temp_addr = nullptr;
-		for (Node* addr = (Node*)(this->base_addr); addr; addr = addr->ptr) {
-			if (addr->data == obj) {
-				delete addr;
-				continue;
+	inline void erase(index_t index) {
+		index_t i = 0;
+		for (Node* addr = base_addr; i < index; i++, addr = addr->ptr) {
+			if (i == index - 1) {
+				Node* temp = addr->ptr;
+				addr->ptr = addr->ptr->ptr;
+				delete addr->ptr;
 			}
-			if (temp_addr && temp_addr->ptr != addr) {
-				temp_addr->ptr = addr;
-				break;
-			}
-			temp_addr = addr;
 		}
-		length--;
 	}
-	void reverse() {
+	inline void remove(type const& obj) {
+		erase(index(obj));
+	}
+	inline void reverse() {
+		if (!base_addr)
+			throw list_empty_error();
 		Node* prev = nullptr;
-		Node* addr = (Node*)base_addr;
-		Node* next = ((Node*)base_addr)->ptr;
+		Node* addr = base_addr;
+		Node* next = base_addr->ptr;
 		for (index_t i = 0; addr; i++, addr = next) {
 			next = addr->ptr;
 			addr->ptr = prev;
@@ -106,50 +116,44 @@ public:
 		}
 		base_addr = prev;
 	}
-	void recursively_reverse(Node* p = (Node*)base_addr) {
-		if (p->ptr == nullptr) {
-			base_addr = p;
-			return;
+	inline bool has(type const& obj) {
+		try {
+			index(obj);
 		}
-		recursively_reverse(p->ptr);
-		Node* q = p->ptr;
-		q->ptr = p;
-		p->ptr = nullptr;
+		catch (...) {
+			return false;
+		}
+		return true;
 	}
-	index_t& index(type obj) {
+	inline index_t index(type const& obj) {
 		index_t i = 0;
-		for (void* addr = this->base_addr; addr; addr = ((Node*)addr)->ptr, i++) {
-			Node* addr_obj = ((Node*)addr);
-			if (addr_obj->data == obj)
+		for (Node* addr = this->base_addr; addr; addr = addr->ptr, i++) {
+			if (*addr->data == obj)
 				return i;
 		}
+		throw element_not_found_error();
 	}
-	Proxy at(index_t index) {
-		if (index >= length) {
-			Node* node = new Node(nullptr);
-			((Node*)last_addr)->ptr = node;
-			last_addr = node;
-			return Proxy(node);
-		}
-		Node* addr = (Node*)base_addr;
-		for (index_t i = 0; i < index && addr->ptr; i++)
-			addr = addr->ptr;
-		return Proxy(addr);
+	inline type& at(index_t index) {
+		return (*this)[index];
 	}
-	size_t get_length() const {
+	inline size_t size() const noexcept {
 		return length;
 	}
-	type operator [] (int index) {
+	inline bool empty() const noexcept {
+		return !length;
+	}
+	type& operator [] (int index) {
 		index_t i = 0;
-		for (void* addr = this->base_addr; addr; addr = ((Node*)addr)->ptr, i++)
-			if (i == index) return ((Node*)addr)->data;
+		for (Node* addr = this->base_addr; addr; addr = addr->ptr, i++)
+			if (i == index)
+				return *addr->data;
 		throw index_error();
 	}
 	friend auto operator << (std::ostream& os, SinglyLinkedList const& obj) -> std::ostream& {
 		std::cout << "[";
 		index_t i = 0;
-		for (void* addr = obj.base_addr; addr; addr = ((Node*)addr)->ptr, i++)
-			std::cout << ((Node*)addr)->data << ((i == obj.get_length() - 1) ? "" : ", ");
+		for (Node* addr = obj.base_addr; addr; addr = addr->ptr, i++)
+			std::cout << *(addr->data) << ((i != obj.size() - 1) ? ", " : "");
 		std::cout << "]";
 		return os;
 	}
