@@ -18,19 +18,7 @@ template <typename type> class SinglyLinkedList {
 		type* data;
 		Node* ptr;
 	};
-	class Proxy {
-		Node* node = nullptr;
-		type* base_addr = nullptr;
-	public:
-		Proxy(Node* node, type* base_addr) {
-			this->node = node;
-			this->base_addr = base_addr;
-		}
-		Proxy& operator = (type obj) noexcept {
-			node->data = obj;
-			return *this;
-		}
-	};
+
 	Node* base_addr = nullptr;
 	Node* last_addr = nullptr;
 	size_t length = 0;
