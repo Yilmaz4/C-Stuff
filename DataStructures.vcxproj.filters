@@ -21,13 +21,10 @@
     <ClInclude Include="src\stack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="queue.h">
+    <ClInclude Include="src\circulararray.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="circulararray.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="scenerios\parenthese_balance.h">
+    <ClInclude Include="src\queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

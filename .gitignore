@@ -3,6 +3,7 @@
 \scenerios
 \Debug
 \Release
+test.cpp
 
 # Prerequisites
 *.d
