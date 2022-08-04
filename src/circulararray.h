@@ -17,6 +17,9 @@ public:
 		for (index_t i = 0; i < length; i++)
 			(*this)[i] = *((type*)list.begin() + i);
 	}
+	~CircularArray() {
+		delete[] base_addr;
+	}
 	inline void print() const {
 		std::cout << "[";
 		for (index_t i = 0; i < length; i++)
@@ -29,8 +32,8 @@ public:
 	inline bool empty() const noexcept {
 		return !length;
 	}
-	type& operator [] (int index) const noexcept {
-		return *(base_addr + (index % (int)length));
+	type& operator [] (index_t index) const noexcept {
+		return *(base_addr + (index % length));
 	}
 	operator int * __ptr64() const noexcept {
 		return base_addr;
