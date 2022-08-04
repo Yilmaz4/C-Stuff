@@ -8,14 +8,16 @@ typedef unsigned long long index_t;
 template <typename type> class SinglyLinkedList {
 	struct Node {
 		Node(type data, Node* ptr) {
-			this->data = (type*)malloc(sizeof(data));
 			*this->data = data;
 			this->ptr = ptr;
 		}
 		Node(Node* ptr) {
 			this->ptr = ptr;
 		}
-		type* data;
+		~Node() {
+			free((void*)this->data);
+		}
+		type* data = reinterpret_cast<type*>(malloc(sizeof(type)));
 		Node* ptr;
 	};
 
@@ -39,6 +41,11 @@ public:
 		}
 	};
 	SinglyLinkedList(void) = default;
+	SinglyLinkedList(std::initializer_list<type> const& list) {
+		for (auto const& obj : list) {
+			push_back(obj);
+		}
+	}
 
 	inline Node* insert(type const& obj, index_t index) {
 		if (!base_addr) {
@@ -78,14 +85,22 @@ public:
 	inline Node* push_back(type const& obj) {
 		return this->insert(obj, length);
 	}
-	inline void erase(index_t index) {
-		index_t i = 0;
-		for (Node* addr = base_addr; i < index; i++, addr = addr->ptr) {
-			if (i == index - 1) {
-				Node* temp = addr->ptr;
-				addr->ptr = addr->ptr->ptr;
-				delete addr->ptr;
+	inline void erase(index_t const index) {
+		Node* next = base_addr->ptr;
+		Node* curr = base_addr;
+		Node* prev = nullptr;
+		for (index_t i = 0; i <= index; i++) {
+			if (i == index) {
+				delete curr;
+				if (prev)
+					prev->ptr = next;
+				else
+					base_addr = next;
+				return;
 			}
+			prev = curr;
+			curr = curr->ptr;
+			next = next->ptr;
 		}
 	}
 	inline void remove(type const& obj) {
@@ -121,7 +136,7 @@ public:
 		}
 		throw element_not_found_error();
 	}
-	inline type& at(index_t index) {
+	inline type& at(index_t const index) const {
 		return (*this)[index];
 	}
 	inline size_t size() const noexcept {
@@ -130,7 +145,7 @@ public:
 	inline bool empty() const noexcept {
 		return !length;
 	}
-	type& operator [] (int index) {
+	type& operator [] (index_t index) {
 		index_t i = 0;
 		for (Node* addr = this->base_addr; addr; addr = addr->ptr, i++)
 			if (i == index)
