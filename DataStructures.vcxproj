@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="circulararray.h" />
-    <ClInclude Include="queue.h" />
+    <ClInclude Include="src\circulararray.h" />
     <ClInclude Include="src\linkedlist.h" />
+    <ClInclude Include="src\queue.h" />
     <ClInclude Include="src\stack.h" />
   </ItemGroup>
   <ItemGroup>
