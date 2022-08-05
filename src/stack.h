@@ -6,7 +6,8 @@
 template <typename type> class LinkedStack {
 	struct Node {
 		Node(type data, Node* ptr) {
-			*this->data = data;
+			if (this->data)
+				*this->data = data;
 			this->ptr = ptr;
 		}
 		~Node() {

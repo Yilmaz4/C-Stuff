@@ -8,7 +8,8 @@ typedef unsigned long long index_t;
 template <typename type> class SinglyLinkedList {
 	struct Node {
 		Node(type data, Node* ptr) {
-			*this->data = data;
+			if (this->data)
+				*this->data = data;
 			this->ptr = ptr;
 		}
 		Node(Node* ptr) {
