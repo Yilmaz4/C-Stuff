@@ -3,11 +3,11 @@
 #include <iostream>
 #include <exception>
 
-typedef unsigned long long index_t;
+typedef size_t index_t;
 
 template <typename type> class SinglyLinkedList {
 	struct Node {
-		Node(type data, Node* ptr) {
+		Node(type const& data, Node* ptr) {
 			if (this->data)
 				*this->data = data;
 			this->ptr = ptr;
@@ -18,7 +18,9 @@ template <typename type> class SinglyLinkedList {
 		~Node() {
 			free((void*)this->data);
 		}
-		type* data = reinterpret_cast<type*>(malloc(sizeof(type)));
+		// using malloc here because we will need to copy a local variable to
+		// heap and I am not aware of any way of doing this with new operator
+		type* data = static_cast<type*>(malloc(sizeof(type)));
 		Node* ptr;
 	};
 

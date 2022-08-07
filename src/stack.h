@@ -3,6 +3,8 @@
 #include <iostream>
 #include <exception>
 
+typedef size_t index_t;
+
 template <typename type> class LinkedStack {
 	struct Node {
 		Node(type data, Node* ptr) {
@@ -13,7 +15,9 @@ template <typename type> class LinkedStack {
 		~Node() {
 			free((void*)this->data);
 		}
-		type* data = (type*)malloc(sizeof(type));
+		// using malloc here because we will need to copy a local variable to
+		// heap and I am not aware of any way of doing this with new operator
+		type* data = static_cast<type*>(malloc(sizeof(type)));
 		Node* ptr;
 	};
 

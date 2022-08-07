@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-typedef unsigned long long index_t;
+typedef size_t index_t;
 
 template <typename type> class CircularArray {
 	type* base_addr;
