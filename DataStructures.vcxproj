@@ -23,6 +23,7 @@
     <ClInclude Include="src\linkedlist.h" />
     <ClInclude Include="src\queue.h" />
     <ClInclude Include="src\stack.h" />
+    <ClInclude Include="src\tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="test.cpp" />
