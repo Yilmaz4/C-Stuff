@@ -13,27 +13,83 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\data-structures">
+      <UniqueIdentifier>{38da4761-f12a-4dd5-89a7-b1fad11d7ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\opengl">
+      <UniqueIdentifier>{07d0936c-1b53-464e-9de6-7d5a3bfbd170}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\opengl">
+      <UniqueIdentifier>{3eb760a6-8b07-448d-aa44-be1dd5631d16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\opengl">
+      <UniqueIdentifier>{943d398f-cf90-4e3a-8e6c-b78f9bdfe89e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\data-structures">
+      <UniqueIdentifier>{e309d7e6-857f-44c7-8460-21707711a167}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\linkedlist.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\data_structures\circulararray.h">
+      <Filter>Header Files\data-structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\stack.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\data_structures\linkedlist.h">
+      <Filter>Header Files\data-structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\circulararray.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\data_structures\queue.h">
+      <Filter>Header Files\data-structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\queue.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\data_structures\stack.h">
+      <Filter>Header Files\data-structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\tree.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\data_structures\tree.h">
+      <Filter>Header Files\data-structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\EBO.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\shaderClass.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\VAO.h">
+      <Filter>Header Files\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\opengl\VBO.h">
+      <Filter>Header Files\opengl</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\opengl\glad.c">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenGLTest\shaderClass.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenGLTest\VAO.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenGLTest\VBO.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OpenGLTest\EBO.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
     <ClCompile Include="test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\data_structures\main.cpp">
+      <Filter>Source Files\data-structures</Filter>
+    </ClCompile>
+    <ClCompile Include="src\opengl\main.cpp">
+      <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\opengl\default.frag">
+      <Filter>Resource Files\opengl</Filter>
+    </None>
+    <None Include="src\opengl\default.vert">
+      <Filter>Resource Files\opengl</Filter>
+    </None>
   </ItemGroup>
 </Project>
