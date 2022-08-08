@@ -101,8 +101,5 @@ namespace tree {
 			}
 			return root;
 		}
-		inline bool is_bst() const noexcept {
-
-		}
 	};
 }
