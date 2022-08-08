@@ -14,7 +14,7 @@ namespace circulararray {
 		}
 		CircularArray(std::initializer_list<type> const& list) {
 			length = list.size();
-			base_addr = new type[length];
+			base_addr = static_cast<type*>(malloc(length * sizeof type));
 			for (index_t i = 0; i < length; i++)
 				(*this)[i] = *((type*)list.begin() + i);
 		}
