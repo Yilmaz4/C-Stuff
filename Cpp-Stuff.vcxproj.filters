@@ -74,13 +74,10 @@
     <ClCompile Include="..\OpenGLTest\EBO.cpp">
       <Filter>Source Files\opengl</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\data_structures\main.h">
+    <ClCompile Include="src\data_structures\main.cpp">
       <Filter>Source Files\data-structures</Filter>
     </ClCompile>
-    <ClCompile Include="src\opengl\main.h">
+    <ClCompile Include="src\opengl\main.cpp">
       <Filter>Source Files\opengl</Filter>
     </ClCompile>
   </ItemGroup>

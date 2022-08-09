@@ -5,21 +5,22 @@
 namespace circulararray {
 	typedef size_t index_t;
 
-	template <typename type> class CircularArray {
-		type* base_addr;
+	template <typename type> class CircularArray final {
+		type* base;
 		size_t length = 0;
 	public:
-		explicit CircularArray(const size_t size) : length(size) {
-			base_addr = new type[size];
+		explicit CircularArray(const size_t& size) : length(size) {
+			base = static_cast<type*>(malloc(length * sizeof type));
 		}
 		CircularArray(std::initializer_list<type> const& list) {
 			length = list.size();
-			base_addr = static_cast<type*>(malloc(length * sizeof type));
-			for (index_t i = 0; i < length; i++)
+			base = static_cast<type*>(malloc(length * sizeof type));
+			for (index_t i = 0; i < length; i++) {
 				(*this)[i] = *((type*)list.begin() + i);
+			}
 		}
 		~CircularArray() {
-			delete[] base_addr;
+			free((void*)base);
 		}
 		inline void print() const {
 			std::cout << "[";
@@ -33,11 +34,11 @@ namespace circulararray {
 		inline bool empty() const noexcept {
 			return !length;
 		}
-		type& operator [] (index_t index) const noexcept {
-			return *(base_addr + (index % length));
+		type& operator [] (index_t index) const {
+			return *(base + (index % length));
 		}
 		operator int* __ptr64() const noexcept {
-			return base_addr;
+			return base;
 		}
 	};
 }

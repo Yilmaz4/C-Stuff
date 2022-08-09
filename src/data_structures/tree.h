@@ -14,7 +14,7 @@ namespace tree {
 	};
 
 	template <typename type> requires tree::supports_comparison<type>
-	class BinarySearchTree {
+	class BinarySearchTree final {
 		struct Node {
 			Node(type const& data_r, Node* left_p, Node* right_p) {
 				if (data)

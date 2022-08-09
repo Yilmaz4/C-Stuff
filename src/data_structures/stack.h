@@ -6,7 +6,7 @@
 namespace stack {
 	typedef size_t index_t;
 
-	template <typename type> class LinkedStack {
+	template <typename type> class LinkedStack final {
 		struct Node {
 			Node(type data, Node* ptr) {
 				if (this->data)

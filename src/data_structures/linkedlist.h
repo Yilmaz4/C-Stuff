@@ -6,7 +6,7 @@
 namespace linkedlist {
 	typedef size_t index_t;
 
-	template <typename type> class SinglyLinkedList {
+	template <typename type> class SinglyLinkedList final {
 		struct Node {
 			Node(type const& data, Node* ptr) {
 				if (this->data)

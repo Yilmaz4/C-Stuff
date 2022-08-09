@@ -34,10 +34,9 @@
     <ClCompile Include="..\OpenGLTest\shaderClass.cpp" />
     <ClCompile Include="..\OpenGLTest\VAO.cpp" />
     <ClCompile Include="..\OpenGLTest\VBO.cpp" />
-    <ClCompile Include="test.cpp" />
-    <ClCompile Include="src\data_structures\main.h" />
+    <ClCompile Include="src\data_structures\main.cpp" />
     <ClCompile Include="src\opengl\glad.c" />
-    <ClCompile Include="src\opengl\main.h" />
+    <ClCompile Include="src\opengl\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\opengl\default.frag" />

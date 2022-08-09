@@ -6,7 +6,7 @@
 namespace queue {
 	typedef size_t index_t;
 
-	template <typename type> class LinkedQueue {
+	template <typename type> class LinkedQueue final {
 		struct Node {
 			Node(type data, Node* ptr) {
 				if (this->data)
