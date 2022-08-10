@@ -120,10 +120,7 @@ namespace tree {
 			}
 			else {
 				Node* temp;
-				std::cout << "Node at address 0x" << node << " with data " << *node->data << std::endl;
 				free(static_cast<void*>(node->data));
-				std::cout << "Left of right: " << node->right->left << std::endl;
-				std::cout << "Right of left: " << node->left->right << std::endl;
 				if (!node->right->left) {
 					*node->data = min_in_subtree(node->right);
 					temp = node->right;
