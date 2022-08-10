@@ -165,13 +165,7 @@ namespace tree {
 			return height_of(*this->root->data);
 		}
 		inline bool has(type const& obj) const noexcept {
-			try {
-				return find(this->root, obj);
-			}
-			catch (...) {
-				return false;
-			}
-			
+			return find(this->root, obj);
 		}
 		inline type& max() const {
 			if (!this->root)
