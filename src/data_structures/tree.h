@@ -52,15 +52,11 @@ namespace tree {
 
 		Node* root = nullptr;
 
-		inline Node* find(Node* root, type const& obj, bool check = true) const {
+		inline Node* find(Node* root, type const& obj) const {
 			while (root && root->data && *root->data != obj)
 				root = ((obj > *root->data) ? root->right : root->left);
-			if (check) {
-				if (!root && this->root)
-					throw tree::not_found_error();
-				else if (!this->root)
-					throw tree::tree_empty_error();
-			}
+			if (!root)
+				throw tree::not_found_error();
 			return root;
 		}
 		static inline type& max_in_subtree(const Node* subtree) {
@@ -147,7 +143,7 @@ namespace tree {
 			return i;
 		}
 		inline long height_of(type const& obj) const {
-			queue::LinkedQueue<Node*> q{ find(this->root, obj, true) };
+			queue::LinkedQueue<Node*> q{ find(this->root, obj) };
 			long height = 0;
 			for (size_t size = 1; !q.empty(); height++, size = q.size()) {
 				for (unsigned __int64 i = 0; i < size; i++) {
@@ -162,9 +158,11 @@ namespace tree {
 			return height - 1;
 		}
 		inline long height() const noexcept {
+			if (!this->root)
+				return -1;
 			return height_of(*this->root->data);
 		}
-		inline bool has(type const& obj) const noexcept {
+		inline bool has(type const& obj) const {
 			return find(this->root, obj);
 		}
 		inline type& max() const {
