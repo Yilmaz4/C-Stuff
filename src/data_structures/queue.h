@@ -34,11 +34,11 @@ namespace queue {
 		LinkedQueue(void) = default;
 		LinkedQueue(std::initializer_list<type> const& list) {
 			for (auto const& obj : list) {
-				enqueue(obj);
+				push(obj);
 			}
 		}
 
-		inline void enqueue(type const& obj) {
+		inline void push(type const& obj) {
 			length++;
 			if (!last_addr) {
 				base_addr = last_addr = new Node(obj, nullptr);
@@ -47,13 +47,17 @@ namespace queue {
 			last_addr->ptr = new Node(obj, nullptr);
 			last_addr = last_addr->ptr;
 		}
-		inline type dequeue() {
+		inline type& pop() {
 			if (empty())
 				throw queue_empty_error();
 			Node* temp = base_addr;
+			type* value = temp->data;
 			base_addr = temp->ptr;
+			if (!base_addr)
+				last_addr = nullptr;
 			delete temp;
 			length--;
+			return *value;
 		}
 		inline type& front() const {
 			if (empty())
@@ -111,13 +115,13 @@ namespace queue {
 			for (auto const& obj : list)
 				enqueue(obj);
 		}
-		inline void enqueue(type const& obj) {
+		inline void push(type const& obj) {
 			if (!head && tail == length)
 				throw queue_full_error();
 			base_addr[tail % length] = obj;
 			tail++;
 		}
-		inline type& dequeue() {
+		inline type& pop() {
 			if (head == tail)
 				throw queue_empty_error();
 			type& val = base_addr[head];
