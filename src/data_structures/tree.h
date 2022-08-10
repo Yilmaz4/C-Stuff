@@ -98,7 +98,7 @@ namespace tree {
 			((obj > *prev->data) ? prev->right : prev->left) = node;
 		}
 		inline void remove(type const& obj) {
-			Node* node = find(this->root, obj, true);
+			Node* node = find(this->root, obj);
 			if (!node->right && !node->left) {
 				((obj > *node->parent->data) ?
 					node->parent->right :
