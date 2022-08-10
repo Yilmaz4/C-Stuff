@@ -6,6 +6,6 @@
 #include "stack.h"
 #include "tree.h"
 
-int ds_main(int argc, char* argv[]) {
-	return 0;
+int main(int argc, char* argv[]) {
+	tree::BinarySearchTree<int> myTree{ 10, 15, 1, 11, 2, 16, 17, 18, 0, -6, -5, -3 };
 }
