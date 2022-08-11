@@ -19,11 +19,6 @@ namespace string {
 				data = data_p;
 				ptr = ptr_p;
 			}
-			Node* operator ++ () {
-				data = ptr->data;
-				ptr = ptr->ptr;
-				return ptr;
-			}
 			char data;
 			Node* ptr = nullptr;
 		};
@@ -145,7 +140,7 @@ namespace string {
 			if (pos > length_v)
 				throw string::out_of_range();
 			Node* addr = base_addr;
-			for (size_t i = pos, j = 0; i < len + 1 && i < length_v; addr++, i++, j++) {
+			for (size_t i = pos, j = 0; i < len + 1 && i < length_v; addr = addr->ptr, i++, j++) {
 				if (i == len)
 					return i;
 				*(s + j) = (*this)[i];
@@ -214,7 +209,23 @@ namespace string {
 		LinkedString& replace(size_t pos, size_t len, const char* s, size_t n);
 		LinkedString& replace(size_t pos, size_t len, size_t n, char c);
 
-		void resize(size_t n);
+		__pragma(warning(disable:4018)) // '<': signed / unsigned mismatch
+		__pragma(warning(disable:6011)) // Dereferencing NULL pointer 'to_del'
+		void resize(size_t n) noexcept {
+			if (n >= length_v)
+				return;
+			Node*  addr = base_addr;
+			Node** to_del = (Node**)calloc(length_v - n, sizeof(Node*));
+			for (__int64 i = 0, j = -1; addr; addr = addr->ptr, i++) {
+				if (i + 1 == n)
+					addr->ptr = nullptr;
+				if (n < i)
+					to_del[j++] = addr;
+			}
+			for (__int64 i = 0; i < size() - n; i++) {
+				delete to_del[i];
+			}
+		}
 		void resize(size_t n, char c);
 
 		inline size_t size() const noexcept {
@@ -233,14 +244,14 @@ namespace string {
 			if (pos >= size())
 				throw string::out_of_range();
 			Node* addr = base_addr;
-			for (size_t i = 0; i != pos; i++, addr++);
+			for (size_t i = 0; i != pos; i++, addr = addr->ptr);
 			return addr->data;
 		}
 		const char& operator [] (size_t pos) const {
 			if (pos >= size())
 				throw string::out_of_range();
 			Node* addr = base_addr;
-			for (size_t i = 0; i != pos; i++, addr++);
+			for (size_t i = 0; i != pos; i++, addr = addr->ptr);
 			return addr->data;
 		}
 
