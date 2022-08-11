@@ -34,7 +34,7 @@ namespace string {
 		LinkedString(const LinkedString& str, size_t pos, size_t len = string::npos) {
 			if (pos > str.size() || pos > len)
 				throw string::out_of_range();
-			for (size_t i = pos; pos < ((len == string::npos) ? str.size() : len); i++) {
+			for (size_t i = pos, j = 0; j < ((len == string::npos) ? length_v : len); i++, j++) {
 				push_back(str[i]);
 			}
 		}
@@ -213,10 +213,36 @@ namespace string {
 				operator[](i) = str[j];
 			return (*this);
 		}
-		LinkedString& replace(size_t pos, size_t len, const LinkedString& str, size_t subpos, size_t sublen = string::npos);
-		LinkedString& replace(size_t pos, size_t len, const char* s);
-		LinkedString& replace(size_t pos, size_t len, const char* s, size_t n);
-		LinkedString& replace(size_t pos, size_t len, size_t n, char c);
+		LinkedString& replace(size_t pos, size_t len, const LinkedString& str, size_t subpos, size_t sublen = string::npos) {
+			if (len > str.size())
+				len = str.size();
+			if (sublen == string::npos)
+				sublen = str.size();
+			Node* addr = base_addr;
+			for (size_t i = pos, j = subpos; j < len && j < sublen && addr; addr = addr->ptr, i++, j++)
+				operator[](i) = str[j];
+			return (*this);
+		}
+		LinkedString& replace(size_t pos, size_t len, const char* s) {
+			Node* addr = base_addr;
+			for (size_t i = pos, j = 0; j < len && s[j] != '\0' && addr; addr = addr->ptr, i++, j++)
+				operator[](i) = *(s + j);
+			return (*this);
+		}
+		LinkedString& replace(size_t pos, size_t len, const char* s, size_t n) {
+			if (len > n)
+				len = n;
+			Node* addr = base_addr;
+			for (size_t i = pos, j = 0; j < len && addr; addr = addr->ptr, i++, j++)
+				operator[](i) = *(s + j);
+			return (*this);
+		}
+		LinkedString& replace(size_t pos, size_t len, size_t n, char c) {
+			Node* addr = base_addr;
+			for (size_t i = pos, j = 0; j < len && j < n && addr; addr = addr->ptr, i++, j++)
+				operator[](i) = c;
+			return (*this);
+		}
 
 		__pragma(warning(disable:4018)) // '<': signed / unsigned mismatch
 		__pragma(warning(disable:6011)) // Dereferencing NULL pointer 'to_del'
@@ -256,7 +282,9 @@ namespace string {
 			return length_v;
 		}
 
-		LinkedString substr(size_t pos = 0, size_t len = string::npos) const;
+		LinkedString substr(size_t pos = 0, size_t len = string::npos) const {
+			return LinkedString(*this, pos, len);
+		}
 
 		void swap(LinkedString& str) {
 			auto copy = str;
@@ -323,6 +351,11 @@ namespace string {
 		}
 
 		friend auto operator << (std::ostream& os, LinkedString& obj) -> std::ostream& {
+			for (Node* addr = obj.base_addr; addr; addr = addr->ptr)
+				std::cout << addr->data;
+			return os;
+		}
+		friend auto operator << (std::ostream& os, LinkedString obj) -> std::ostream& {
 			for (Node* addr = obj.base_addr; addr; addr = addr->ptr)
 				std::cout << addr->data;
 			return os;

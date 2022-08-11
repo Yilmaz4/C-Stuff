@@ -11,6 +11,6 @@ using namespace tree;
 using namespace string;
 
 int main(int argc, char* argv[]) {
-	LinkedString str2 = "Hello Neighbor!";
-	std::cout << str2;
+	LinkedString str2 = "Hello World!";
+	std::cout << str2.substr(2, 5);
 }
