@@ -6,6 +6,22 @@
 namespace linkedlist {
 	typedef size_t index_t;
 
+	struct index_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "List index out of range";
+		}
+	};
+	struct list_empty_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "List is empty";
+		}
+	};
+	struct element_not_found_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "Specified element was not found in the list";
+		}
+	};
+
 	template <typename type> class SinglyLinkedList final {
 		struct Node {
 			Node(type const& data, Node* ptr) {
@@ -29,21 +45,6 @@ namespace linkedlist {
 		Node* last_addr = nullptr;
 		size_t length = 0;
 	public:
-		struct index_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "List index out of range";
-			}
-		};
-		struct list_empty_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "List is empty";
-			}
-		};
-		struct element_not_found_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "Specified element was not found in the list";
-			}
-		};
 		SinglyLinkedList(void) = default;
 		SinglyLinkedList(std::initializer_list<type> const& list) {
 			for (auto const& obj : list) {
@@ -51,7 +52,7 @@ namespace linkedlist {
 			}
 		}
 
-		inline Node* insert(type const& obj, index_t index) {
+		Node* insert(type const& obj, index_t index) {
 			if (!base_addr) {
 				base_addr = new Node(obj, nullptr);
 				last_addr = base_addr;
@@ -86,10 +87,10 @@ namespace linkedlist {
 				return addr;
 			}
 		}
-		inline Node* push_back(type const& obj) {
+		Node* push_back(type const& obj) {
 			return this->insert(obj, length);
 		}
-		inline void erase(index_t const index) {
+		void erase(index_t const index) {
 			Node* next = base_addr->ptr;
 			Node* curr = base_addr;
 			Node* prev = nullptr;
@@ -107,12 +108,12 @@ namespace linkedlist {
 				next = next->ptr;
 			}
 		}
-		inline void remove(type const& obj) {
+		void remove(type const& obj) {
 			erase(index(obj));
 		}
-		inline void reverse() {
+		void reverse() {
 			if (!base_addr)
-				throw list_empty_error();
+				throw linkedlist::list_empty_error();
 			Node* prev = nullptr;
 			Node* addr = base_addr;
 			Node* next = base_addr->ptr;
@@ -123,7 +124,7 @@ namespace linkedlist {
 			}
 			base_addr = prev;
 		}
-		inline bool has(type const& obj) {
+		bool has(type const& obj) {
 			try {
 				index(obj);
 			}
@@ -132,21 +133,21 @@ namespace linkedlist {
 			}
 			return true;
 		}
-		inline index_t index(type const& obj) {
+		index_t index(type const& obj) {
 			index_t i = 0;
 			for (Node* addr = this->base_addr; addr; addr = addr->ptr, i++) {
 				if (*addr->data == obj)
 					return i;
 			}
-			throw element_not_found_error();
+			throw linkedlist::element_not_found_error();
 		}
-		inline type& at(index_t const index) const {
+		type& at(index_t const index) const {
 			return (*this)[index];
 		}
-		inline size_t size() const noexcept {
+		size_t size() const noexcept {
 			return length;
 		}
-		inline bool empty() const noexcept {
+		bool empty() const noexcept {
 			return !length;
 		}
 		type& operator [] (index_t index) {
@@ -154,7 +155,7 @@ namespace linkedlist {
 			for (Node* addr = this->base_addr; addr; addr = addr->ptr, i++)
 				if (i == index)
 					return *addr->data;
-			throw index_error();
+			throw linkedlist::index_error();
 		}
 		friend auto operator << (std::ostream& os, SinglyLinkedList const& obj) -> std::ostream& {
 			std::cout << "[";
