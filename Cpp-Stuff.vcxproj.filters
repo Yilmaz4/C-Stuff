@@ -57,6 +57,12 @@
     <ClInclude Include="src\opengl\VBO.h">
       <Filter>Header Files\opengl</Filter>
     </ClInclude>
+    <ClInclude Include="src\data_structures\graph.h">
+      <Filter>Header Files\data-structures</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data_structures\string.h">
+      <Filter>Header Files\data-structures</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opengl\glad.c">

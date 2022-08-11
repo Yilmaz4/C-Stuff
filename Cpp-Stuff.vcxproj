@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\data_structures\circulararray.h" />
+    <ClInclude Include="src\data_structures\graph.h" />
     <ClInclude Include="src\data_structures\linkedlist.h" />
     <ClInclude Include="src\data_structures\queue.h" />
     <ClInclude Include="src\data_structures\stack.h" />
+    <ClInclude Include="src\data_structures\string.h" />
     <ClInclude Include="src\data_structures\tree.h" />
     <ClInclude Include="src\opengl\EBO.h" />
     <ClInclude Include="src\opengl\shaderClass.h" />
