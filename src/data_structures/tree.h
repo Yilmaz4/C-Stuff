@@ -52,14 +52,14 @@ namespace tree {
 
 		Node* root = nullptr;
 
-		inline Node* find(Node* root, type const& obj) const {
+		Node* find(Node* root, type const& obj) const {
 			while (root && root->data && *root->data != obj)
 				root = ((obj > *root->data) ? root->right : root->left);
 			if (!root)
 				throw tree::not_found_error();
 			return root;
 		}
-		static inline type& max_in_subtree(const Node* subtree) {
+		static type& max_in_subtree(const Node* subtree) {
 			if (!subtree)
 				throw tree_empty_error();
 			for (const Node* root = subtree; true;) {
@@ -68,7 +68,7 @@ namespace tree {
 				root = root->right;
 			}
 		}
-		static inline type& min_in_subtree(const Node* subtree) {
+		static type& min_in_subtree(const Node* subtree) {
 			if (!subtree)
 				throw tree_empty_error();
 			for (const Node* root = subtree; true;) {
@@ -84,7 +84,7 @@ namespace tree {
 				insert(obj);
 			}
 		}
-		inline void insert(type const& obj) {
+		void insert(type const& obj) {
 			Node* curr = this->root, *prev = nullptr;
 			while (curr) {
 				prev = curr;
@@ -97,7 +97,7 @@ namespace tree {
 			}
 			((obj > *prev->data) ? prev->right : prev->left) = node;
 		}
-		inline void remove(type const& obj) {
+		void remove(type const& obj) {
 			Node* node = find(this->root, obj);
 			if (!node->right && !node->left) {
 				((obj > *node->parent->data) ?
@@ -131,7 +131,7 @@ namespace tree {
 				delete temp;
 			}
 		}
-		inline long depth_of(type const& obj) const {
+		long depth_of(type const& obj) const {
 			Node* node = this->root;
 			long i = 0;
 			for (; node && *node->data != obj; i++)
@@ -142,7 +142,7 @@ namespace tree {
 				throw tree::tree_empty_error();
 			return i;
 		}
-		inline long height_of(type const& obj) const {
+		long height_of(type const& obj) const {
 			queue::LinkedQueue<Node*> q{ find(this->root, obj) };
 			long height = 0;
 			for (size_t size = 1; !q.empty(); height++, size = q.size()) {
@@ -157,15 +157,15 @@ namespace tree {
 			}
 			return height - 1;
 		}
-		inline long height() const noexcept {
+		long height() const noexcept {
 			if (!this->root)
 				return -1;
 			return height_of(*this->root->data);
 		}
-		inline bool has(type const& obj) const {
+		bool has(type const& obj) const {
 			return find(this->root, obj);
 		}
-		inline type& max() const {
+		type& max() const {
 			if (!this->root)
 				throw tree_empty_error();
 			for (Node* root = this->root; true;) {
@@ -174,7 +174,7 @@ namespace tree {
 				root = root->right;
 			}
 		}
-		inline type& min() const {
+		type& min() const {
 			if (!this->root)
 				throw tree_empty_error();
 			for (Node* root = this->root; true;) {
@@ -182,6 +182,9 @@ namespace tree {
 					return *root->data;
 				root = root->left;
 			}
+		}
+		friend auto operator << (std::ostream& os, BinarySearchTree const& obj) -> std::ostream& {
+			return os;
 		}
 	};
 }

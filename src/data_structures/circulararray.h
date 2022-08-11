@@ -22,16 +22,16 @@ namespace circulararray {
 		~CircularArray() {
 			free((void*)base);
 		}
-		inline void print() const {
+		void print() const {
 			std::cout << "[";
 			for (index_t i = 0; i < length; i++)
 				std::cout << (*this)[i] << ((i != length - 1) ? ", " : "");
 			std::cout << "]";
 		}
-		inline size_t size() const noexcept {
+		size_t size() const noexcept {
 			return length;
 		}
-		inline bool empty() const noexcept {
+		bool empty() const noexcept {
 			return !length;
 		}
 		type& operator [] (index_t index) const {

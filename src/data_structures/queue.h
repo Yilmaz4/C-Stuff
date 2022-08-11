@@ -38,7 +38,7 @@ namespace queue {
 			}
 		}
 
-		inline void push(type const& obj) {
+		void push(type const& obj) {
 			length++;
 			if (!last_addr) {
 				base_addr = last_addr = new Node(obj, nullptr);
@@ -47,7 +47,7 @@ namespace queue {
 			last_addr->ptr = new Node(obj, nullptr);
 			last_addr = last_addr->ptr;
 		}
-		inline type& pop() {
+		type& pop() {
 			if (empty())
 				throw queue_empty_error();
 			Node* temp = base_addr;
@@ -59,15 +59,15 @@ namespace queue {
 			length--;
 			return *value;
 		}
-		inline type& front() const {
+		type& front() const {
 			if (empty())
 				throw queue_empty_error();
 			return *base_addr->data;
 		}
-		inline bool empty() const noexcept {
+		bool empty() const noexcept {
 			return !length;
 		}
-		inline size_t size() const noexcept {
+		size_t size() const noexcept {
 			return length;
 		}
 		operator type& () const {
@@ -115,28 +115,28 @@ namespace queue {
 			for (auto const& obj : list)
 				enqueue(obj);
 		}
-		inline void push(type const& obj) {
+		void push(type const& obj) {
 			if (!head && tail == length)
 				throw queue_full_error();
 			base_addr[tail % length] = obj;
 			tail++;
 		}
-		inline type& pop() {
+		type& pop() {
 			if (head == tail)
 				throw queue_empty_error();
 			type& val = base_addr[head];
 			head++;
 			return val;
 		}
-		inline type& front() const {
+		type& front() const {
 			if (head == tail)
 				throw queue_empty_error();
 			return base_addr[head];
 		}
-		inline size_t size() const noexcept {
+		size_t size() const noexcept {
 			return tail - head;
 		}
-		inline type* get_array() const noexcept {
+		type* get_array() const noexcept {
 			return base_addr;
 		}
 		operator type& () const {

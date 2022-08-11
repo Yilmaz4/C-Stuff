@@ -37,11 +37,11 @@ namespace stack {
 			}
 		}
 
-		inline void push(type obj) {
+		void push(type obj) {
 			top_ptr = new Node(obj, top_ptr);
 			length++;
 		}
-		inline type pop() {
+		type pop() {
 			if (top_ptr == nullptr)
 				throw stack_empty_error();
 			type data = *top_ptr->data;
@@ -51,15 +51,15 @@ namespace stack {
 			length--;
 			return data;
 		}
-		inline type top() {
+		type top() {
 			if (top_ptr == nullptr)
 				throw stack_empty_error();
 			return *top_ptr->data;
 		}
-		inline size_t size() const {
+		size_t size() const {
 			return length;
 		}
-		inline bool empty() const {
+		bool empty() const {
 			return !this->length;
 		}
 		friend auto operator << (std::ostream& os, LinkedStack const& obj) -> std::ostream& {
