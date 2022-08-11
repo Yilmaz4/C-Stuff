@@ -192,7 +192,9 @@ namespace string {
 
 		size_t length() const;
 
-		void pop_back();
+		void pop_back() {
+
+		}
 		
 		void push_back(char c) {
 			Node* node = new Node(c, nullptr);
@@ -203,7 +205,14 @@ namespace string {
 			length_v++;
 		}
 
-		LinkedString& replace(size_t pos, size_t len, const LinkedString& str);
+		LinkedString& replace(size_t pos, size_t len, const LinkedString& str) {
+			if (len > str.size())
+				len = str.size();
+			Node* addr = base_addr;
+			for (size_t i = pos, j = 0; j < len && addr; addr = addr->ptr, i++, j++)
+				operator[](i) = str[j];
+			return (*this);
+		}
 		LinkedString& replace(size_t pos, size_t len, const LinkedString& str, size_t subpos, size_t sublen = string::npos);
 		LinkedString& replace(size_t pos, size_t len, const char* s);
 		LinkedString& replace(size_t pos, size_t len, const char* s, size_t n);
@@ -226,7 +235,22 @@ namespace string {
 				delete to_del[i];
 			}
 		}
-		void resize(size_t n, char c);
+		void resize(size_t n, char c) noexcept {
+			if (n >= length_v)
+				for (size_t i = 0; i < length_v - n; i++)
+					push_back(c);
+			Node* addr = base_addr;
+			Node** to_del = (Node**)calloc(length_v - n, sizeof(Node*));
+			for (__int64 i = 0, j = -1; addr; addr = addr->ptr, i++) {
+				if (i + 1 == n)
+					addr->ptr = nullptr;
+				if (n < i)
+					to_del[j++] = addr;
+			}
+			for (__int64 i = 0; i < size() - n; i++) {
+				delete to_del[i];
+			}
+		}
 
 		inline size_t size() const noexcept {
 			return length_v;
@@ -302,6 +326,12 @@ namespace string {
 			for (Node* addr = obj.base_addr; addr; addr = addr->ptr)
 				std::cout << addr->data;
 			return os;
+		}
+		inline operator std::string () {
+			std::string str;
+			for (size_t i = 0; i < length_v; i++)
+				str.push_back(operator[](i));
+			return str;
 		}
 	};
 }
