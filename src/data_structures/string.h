@@ -19,6 +19,11 @@ namespace string {
 				data = data_p;
 				ptr = ptr_p;
 			}
+			Node* operator ++ () {
+				data = ptr->data;
+				ptr = ptr->ptr;
+				return ptr;
+			}
 			char data;
 			Node* ptr = nullptr;
 		};
@@ -62,28 +67,31 @@ namespace string {
 		}
 
 		LinkedString& append(const LinkedString& str) {
-			for (size_t i = 0; i < str.size(); i++) push_back(str[i]);
+			return operator += (str);
 		}
 		LinkedString& append(const LinkedString& str, size_t subpos, size_t sublen = string::npos) {
 			if (subpos > str.size() || subpos > sublen)
 				throw string::out_of_range();
-			for (size_t i = subpos; subpos < ((sublen == string::npos) ? str.size() : sublen); i++) {
+			for (size_t i = subpos; subpos < ((sublen == string::npos) ? str.size() : sublen); i++)
 				push_back(str[i]);
-			}
+			return (*this);
 		}
 		LinkedString& append(const char* s) {
-			size_t i = 0;
-			for (char c = *s; c != '\0'; i++, c = *(s + i)) push_back(c);
+			return operator += (s);
 		};
 		LinkedString& append(const char* s, size_t n) {
 			size_t i = 0;
-			for (char c = *s; i < n; i++, c = *(s + 1)) push_back(c);
+			for (char c = *s; i < n; i++, c = *(s + 1))
+				push_back(c);
+			return (*this);
 		}
 		LinkedString& append(size_t n, char c) {
-			for (size_t i = 0; i < n; i++) push_back(c);
+			for (size_t i = 0; i < n; i++)
+				push_back(c);
+			return (*this);
 		}
 		LinkedString& append(std::initializer_list<char> il) {
-			for (char const& c : il) push_back(c);
+			return operator += (il);
 		}
 
 		LinkedString& assign(const LinkedString& str) {
@@ -132,11 +140,26 @@ namespace string {
 			base_addr = nullptr;
 		}
 
-		size_t copy() const;
+		__pragma(warning(disable:4715)) // 'string::LinkedString::copy': not all control paths return a value
+		size_t copy(char* s, size_t len, size_t pos = 0) const {
+			if (pos > length_v)
+				throw string::out_of_range();
+			Node* addr = base_addr;
+			for (size_t i = pos, j = 0; i < len + 1 && i < length_v; addr++, i++, j++) {
+				if (i == len)
+					return i;
+				*(s + j) = (*this)[i];
+			}
+		}
 
-		bool empty() const noexcept;
+		bool empty() const noexcept {
+			return length_v;
+		}
 
-		LinkedString& erase(size_t pos, size_t len);
+		LinkedString& erase(size_t pos = 0, size_t len = string::npos) {
+			len = ((len == string::npos) ? length_v : len);
+
+		}
 
 		size_t find(const LinkedString& str, size_t pos = 0) const noexcept;
 		size_t find(const char* s, size_t pos = 0) const;
@@ -210,21 +233,37 @@ namespace string {
 			if (pos >= size())
 				throw string::out_of_range();
 			Node* addr = base_addr;
-			for (size_t i = 0; i != pos; i++, addr = addr->ptr);
+			for (size_t i = 0; i != pos; i++, addr++);
 			return addr->data;
 		}
 		const char& operator [] (size_t pos) const {
 			if (pos >= size())
 				throw string::out_of_range();
 			Node* addr = base_addr;
-			for (size_t i = 0; i != pos; i++, addr = addr->ptr);
+			for (size_t i = 0; i != pos; i++, addr++);
 			return addr->data;
 		}
 
-		LinkedString& operator += (const LinkedString& str);
-		LinkedString& operator += (const char* s);
-		LinkedString& operator += (char c);
-		LinkedString& operator += (std::initializer_list<char> il);
+		LinkedString& operator += (const LinkedString& str) {
+			for (size_t i = 0; i < str.size(); i++)
+				push_back(str[i]);
+			return (*this);
+		}
+		LinkedString& operator += (const char* s) {
+			size_t i = 0;
+			for (char c = *s; c != '\0'; i++, c = *(s + i))
+				push_back(c);
+			return (*this);
+		}
+		LinkedString& operator += (char c) {
+			push_back(c);
+			return (*this);
+		}
+		LinkedString& operator += (std::initializer_list<char> il) {
+			for (char const& c : il)
+				push_back(c);
+			return (*this);
+		}
 
 		LinkedString& operator = (const LinkedString& str) {
 			this->~LinkedString();
