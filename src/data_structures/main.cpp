@@ -11,9 +11,10 @@ using namespace tree;
 using namespace string;
 
 int main(int argc, char* argv[]) {
-	LinkedString str1 = "Hello World!";
+	std::string str1 = "Hello World!";
 	LinkedString str2 = "Hello Neighbor!";
-
-	str1.swap(str2);
-	std::cout << str1 << std::endl << str2;
+	
+	char cArray[15];
+	std::cout << str2.copy(cArray, 20, 0);
+	
 }

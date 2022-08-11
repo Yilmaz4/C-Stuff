@@ -83,7 +83,7 @@
     <ClCompile Include="src\data_structures\main.cpp">
       <Filter>Source Files\data-structures</Filter>
     </ClCompile>
-    <ClCompile Include="src\opengl\main.cpp">
+    <ClCompile Include="src\opengl\opengl.cpp">
       <Filter>Source Files\opengl</Filter>
     </ClCompile>
   </ItemGroup>

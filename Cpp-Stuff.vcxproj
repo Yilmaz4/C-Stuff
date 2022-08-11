@@ -38,7 +38,7 @@
     <ClCompile Include="..\OpenGLTest\VBO.cpp" />
     <ClCompile Include="src\data_structures\main.cpp" />
     <ClCompile Include="src\opengl\glad.c" />
-    <ClCompile Include="src\opengl\main.cpp" />
+    <ClCompile Include="src\opengl\opengl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\opengl\default.frag" />
