@@ -59,6 +59,7 @@ namespace string {
 			for (Node* addr = base_addr, *next = addr->ptr; next; addr = next, next = addr->ptr)
 				delete addr;
 			delete last_addr;
+			last_addr = base_addr = nullptr;
 		}
 
 		LinkedString& append(const LinkedString& str) {
@@ -287,9 +288,9 @@ namespace string {
 		}
 
 		void swap(LinkedString& str) {
-			auto copy = str;
-			str = (*this);
-			operator = (str);
+			LinkedString copy = str;
+			str.assign(*this);
+			operator = (copy);
 		}
 
 		char& operator [] (size_t pos) {
@@ -355,11 +356,7 @@ namespace string {
 				std::cout << addr->data;
 			return os;
 		}
-		friend auto operator << (std::ostream& os, LinkedString obj) -> std::ostream& {
-			for (Node* addr = obj.base_addr; addr; addr = addr->ptr)
-				std::cout << addr->data;
-			return os;
-		}
+
 		inline operator std::string () {
 			std::string str;
 			for (size_t i = 0; i < length_v; i++)
