@@ -5,6 +5,22 @@
 
 namespace queue {
 	typedef size_t index_t;
+	
+	struct queue_empty_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "Queue is empty";
+		}
+	};
+	struct queue_full_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "Queue is full";
+		}
+	};
+	struct invalid_size_multiplier_error : public std::exception {
+		virtual const char* what() const noexcept {
+			return "Size multiplier must be greater than 0";
+		}
+	};
 
 	template <typename type> class LinkedQueue final {
 		struct Node {
@@ -50,11 +66,6 @@ namespace queue {
 		Node* last_addr = nullptr;
 		size_t length = 0;
 	public:
-		struct queue_empty_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "Queue is empty";
-			}
-		};
 		LinkedQueue(void) = default;
 		LinkedQueue(std::initializer_list<type> const& list) {
 			for (auto const& obj : list) {
@@ -113,27 +124,12 @@ namespace queue {
 		}
 	};
 
-	template <typename type, size_t size_multiplier = 4> class ArrayQueue {
+	template <typename type, size_t size_multiplier = 4> class ArrayQueue final {
 		type* base_addr;
 		index_t head = NULL;
 		index_t tail = NULL;
 		size_t length = 0;
 	public:
-		struct queue_empty_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "Queue is empty";
-			}
-		};
-		struct queue_full_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "Queue is full";
-			}
-		};
-		struct invalid_size_multiplier_error : public std::exception {
-			virtual const char* what() const noexcept {
-				return "Size multiplier must be greater than 0";
-			}
-		};
 		explicit ArrayQueue(const size_t size) : length(size) {
 			base_addr = new type[size];
 		}
