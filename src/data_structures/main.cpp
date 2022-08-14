@@ -11,9 +11,10 @@ using namespace tree;
 using namespace string;
 
 int main(int argc, char* argv[]) {
-	LinkedString str1 = "hELLO wORLD!";
-	LinkedString str2 = "Hello World!";
-	
-	str1.swap(str2);
-	std::cout << str1 << std::endl << str2;
+	LinkedString str1;
+
+	for (auto const& c : str1) {
+		std::cout << c;
+	}
+	//std::cout << str1.find('w', 0) << std::endl;
 }
