@@ -11,10 +11,10 @@ using namespace tree;
 using namespace string;
 
 int main(int argc, char* argv[]) {
-	LinkedString str1;
-
-	for (auto const& c : str1) {
-		std::cout << c;
+	queue::LinkedQueue<int> myList {
+		0, 5, 2, 7, 3, 1
+	};
+	for (auto const& obj : myList) {
+		std::cout << obj;
 	}
-	//std::cout << str1.find('w', 0) << std::endl;
 }
