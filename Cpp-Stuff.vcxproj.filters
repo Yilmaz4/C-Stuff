@@ -30,7 +30,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\data_structures\circulararray.h">
+    <ClInclude Include="src\data_structures\array.h">
       <Filter>Header Files\data-structures</Filter>
     </ClInclude>
     <ClInclude Include="src\data_structures\linkedlist.h">

@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-namespace circulararray {
+namespace array {
 	typedef size_t index_t;
 
 	template <typename type> class CircularArray final {

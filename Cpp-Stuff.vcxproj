@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\data_structures\circulararray.h" />
+    <ClInclude Include="src\data_structures\array.h" />
     <ClInclude Include="src\data_structures\graph.h" />
     <ClInclude Include="src\data_structures\linkedlist.h" />
     <ClInclude Include="src\data_structures\queue.h" />
