@@ -18,7 +18,7 @@ namespace string {
 		}
 	};
 
-	class LinkedString {
+	class LinkedString final {
 		struct Node {
 			Node(char data_p, Node* ptr_p) {
 				data = data_p;
