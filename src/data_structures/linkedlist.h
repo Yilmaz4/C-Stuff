@@ -40,6 +40,30 @@ namespace linkedlist {
 			type* data = static_cast<type*>(malloc(sizeof(type)));
 			Node* ptr;
 		};
+		class Iterator {
+			Node* addr = nullptr;
+		public:
+			Iterator(Node* ptr) : addr(ptr) {}
+
+			type& operator * () const {
+				return addr->data;
+			}
+			Iterator& operator ++ () {
+				addr = addr->ptr;
+				return *this;
+			}
+			Iterator operator ++ (int) {
+				Iterator temp = *this;
+				++(*this);
+				return temp;
+			}
+			friend bool operator == (const Iterator& a, const Iterator& b) {
+				return a.addr == b.addr;
+			}
+			friend bool operator != (const Iterator& a, const Iterator& b) {
+				return a.addr != b.addr;
+			}
+		};
 
 		Node* base_addr = nullptr;
 		Node* last_addr = nullptr;
@@ -110,6 +134,12 @@ namespace linkedlist {
 		}
 		void remove(type const& obj) {
 			erase(index(obj));
+		}
+		Iterator begin() {
+			return Iterator(base_addr);
+		}
+		Iterator end() {
+			return Iterator((last_addr) ? last_addr->ptr : last_addr);
 		}
 		void reverse() {
 			if (!base_addr)
