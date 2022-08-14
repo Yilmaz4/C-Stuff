@@ -21,6 +21,30 @@ namespace stack {
 			type* data = static_cast<type*>(malloc(sizeof(type)));
 			Node* ptr;
 		};
+		class Iterator {
+			Node* addr = nullptr;
+		public:
+			Iterator(Node* ptr) : addr(ptr) {}
+
+			type& operator * () const {
+				return *addr->data;
+			}
+			Iterator& operator ++ () {
+				addr = addr->ptr;
+				return *this;
+			}
+			Iterator operator ++ (int) {
+				Iterator temp = *this;
+				++(*this);
+				return temp;
+			}
+			friend bool operator == (const Iterator& a, const Iterator& b) {
+				return a.addr == b.addr;
+			}
+			friend bool operator != (const Iterator& a, const Iterator& b) {
+				return a.addr != b.addr;
+			}
+		};
 
 		Node* top_ptr = nullptr;
 		size_t length = 0;
@@ -55,6 +79,14 @@ namespace stack {
 			if (top_ptr == nullptr)
 				throw stack_empty_error();
 			return *top_ptr->data;
+		}
+		Iterator begin() {
+			return Iterator(top_ptr);
+		}
+		Iterator end() {
+			Node* addr = top_ptr;
+			for (index_t i = 0; addr; addr = addr->ptr, i++);
+			return Iterator(addr);
 		}
 		size_t size() const {
 			return length;
