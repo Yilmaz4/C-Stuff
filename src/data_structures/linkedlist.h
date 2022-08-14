@@ -46,7 +46,7 @@ namespace linkedlist {
 			Iterator(Node* ptr) : addr(ptr) {}
 
 			type& operator * () const {
-				return addr->data;
+				return *addr->data;
 			}
 			Iterator& operator ++ () {
 				addr = addr->ptr;
