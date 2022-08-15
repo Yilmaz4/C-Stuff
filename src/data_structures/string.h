@@ -41,7 +41,7 @@ namespace string {
 			}
 			Iterator operator ++ (int) {
 				Iterator temp = *this;
-				++(*this);
+				addr = addr->ptr;
 				return temp;
 			}
 			friend bool operator == (const Iterator& a, const Iterator& b) {
