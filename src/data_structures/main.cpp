@@ -11,8 +11,12 @@ using namespace tree;
 using namespace string;
 
 int main(int argc, char* argv[]) {
-	array::Array<int, 3> arr1{ 0, 5, 2 };
-	array::Array<int, 3> arr2{ 0, 6, 2 };
-
-	std::cout << (arr1 < arr2);
+	linkedlist::SinglyLinkedList<int> myList{
+		0, 1, 2, 3, 4
+	};
+	linkedlist::SinglyLinkedList<int> mySecondList{
+		10, 11, 12, 13, 14
+	};
+	myList.merge(mySecondList);
+	std::cout << myList;
 }
