@@ -252,7 +252,8 @@ namespace string {
 			}
 			for (size_t i = 0; i < length; i++)
 				if (!matchs[i])
-					return string::npos;
+					start_index = string::npos;
+			delete[] matchs;
 			return start_index;
 		}
 		size_t find(const char* s, size_t pos = 0) const {
@@ -299,7 +300,8 @@ namespace string {
 			}
 			for (size_t i = 0; i < length; i++)
 				if (!matchs[i])
-					return string::npos;
+					start_index = string::npos;
+			delete[] matchs;
 			return start_index;
 		}
 		size_t find(const char* s, size_t pos, size_t n) const {
@@ -343,7 +345,8 @@ namespace string {
 			}
 			for (size_t i = 0; i < length; i++)
 				if (!matchs[i])
-					return string::npos;
+					start_index = string::npos;
+			delete[] matchs;
 			return start_index;
 		}
 		size_t find(char c, size_t pos = 0) const noexcept {
