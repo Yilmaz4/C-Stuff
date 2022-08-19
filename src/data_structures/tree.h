@@ -3,6 +3,7 @@
 #include <iostream>
 #include <exception>
 #include <algorithm>
+#include <cmath>
 
 #include "queue.h"
 
@@ -38,6 +39,10 @@ namespace tree {
 				parent = parent_p;
 				left = left_p;
 				right = right_p;
+			}
+			Node(void) {
+				this->~Node();
+				data = nullptr;
 			}
 			~Node() {
 				free(static_cast<void*>(this->data));
@@ -184,6 +189,25 @@ namespace tree {
 			}
 		}
 		friend auto operator << (std::ostream& os, BinarySearchTree const& obj) -> std::ostream& {
+			queue::LinkedQueue<Node*> q{ obj.root };
+			unsigned __int64 i = 0;
+			unsigned __int64 l = 1;
+			for (size_t size = 1; !q.empty(); size = q.size()) {
+				for (size_t j = 0; j < size; j++, i++) {
+					Node* curr = q.front();
+					if (curr)
+						std::cout << *curr->data;
+					else
+						std::cout << "NULL";
+					std::cout << (i == log2(l) ? [](unsigned __int64* i, unsigned __int64* l) {
+						*i = -1; (*l)++; return ';';
+						}(&i, &l) : ',') << (char)0x20;
+					q.pop();
+					if (!curr) break;
+					q.push((curr && curr->left)  ? curr->left  : nullptr);
+					q.push((curr && curr->right) ? curr->right : nullptr);
+				}
+			}
 			return os;
 		}
 	};
