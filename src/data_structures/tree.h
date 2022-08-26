@@ -1,3 +1,24 @@
+﻿/*
+Copyright © 2017-2022 Yılmaz Alpaslan
+
+Permission is hereby granted, free of charge to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NOINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 #pragma once
 
 #include <iostream>
@@ -126,11 +147,13 @@ namespace tree {
 					*node->data = min_in_subtree(node->right);
 					temp = node->right;
 					node->right = node->right->right;
-				} else if (node->right->left && !node->left->right) {
+				}
+				else if (node->right->left && !node->left->right) {
 					*node->data = max_in_subtree(node->left);
 					temp = node->left;
 					node->left = node->left->left;
-				} else {
+				}
+				else {
 					throw tree::node_cannot_be_deleted();
 				}
 				delete temp;
@@ -196,12 +219,12 @@ namespace tree {
 				for (size_t j = 0; j < size; j++, i++) {
 					Node* curr = q.front();
 					if (curr)
-						std::cout << *curr->data;
+						os << *curr->data;
 					else
-						std::cout << "NULL";
-					std::cout << (i == log2(l) ? [](unsigned __int64* i, unsigned __int64* l) {
-						*i = -1; (*l)++; return ';';
-						}(&i, &l) : ',') << (char)0x20;
+						os << "NULL";
+					os << (i == log2(l) ? [](unsigned __int64* i, unsigned __int64* l) {
+							*i = -1; (*l)++; return ';';
+						} (&i, &l) : (!q.size() ? '\0' : ',')) << (char)0x20;
 					q.pop();
 					if (!curr) break;
 					q.push((curr && curr->left)  ? curr->left  : nullptr);
