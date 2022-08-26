@@ -1,3 +1,24 @@
+﻿/*
+Copyright © 2017-2022 Yılmaz Alpaslan
+
+Permission is hereby granted, free of charge to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all copies
+or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NOINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 #pragma once
 
 #include <iostream>
@@ -37,30 +58,6 @@ namespace queue {
 			type* data = static_cast<type*>(malloc(sizeof(type)));
 			Node* ptr;
 		};
-		class Iterator {
-			Node* addr = nullptr;
-		public:
-			Iterator(Node* ptr) : addr(ptr) {}
-
-			type& operator * () const {
-				return *addr->data;
-			}
-			Iterator& operator ++ () {
-				addr = addr->ptr;
-				return *this;
-			}
-			Iterator operator ++ (int) {
-				Iterator temp = *this;
-				++(*this);
-				return temp;
-			}
-			friend bool operator == (const Iterator& a, const Iterator& b) {
-				return a.addr == b.addr;
-			}
-			friend bool operator != (const Iterator& a, const Iterator& b) {
-				return a.addr != b.addr;
-			}
-		};
 
 		Node* base_addr = nullptr;
 		Node* last_addr = nullptr;
@@ -73,7 +70,43 @@ namespace queue {
 			}
 		}
 
-		void push(type const& obj) {
+		type& back() {
+			if (!length)
+				throw queue::queue_empty_error();
+			return *last_addr->data;
+		}
+		const type& back() const {
+			if (!length)
+				throw queue::queue_empty_error();
+			return *last_addr->data;
+		}
+
+		bool empty() const {
+			return !length;
+		}
+
+		type& front() {
+			if (!length)
+				throw queue::queue_empty_error();
+			return *base_addr->data;
+		}
+		const type& front() const {
+			if (!length)
+				throw queue::queue_empty_error();
+			return *base_addr->data;
+		}
+
+		void pop() {
+			if (empty())
+				throw queue::queue_empty_error();
+			length--;
+			base_addr = base_addr->ptr;
+			if (!base_addr)
+				last_addr = nullptr;
+			delete base_addr;
+		}
+
+		void push(const type& obj) {
 			length++;
 			if (!last_addr) {
 				base_addr = last_addr = new Node(obj, nullptr);
@@ -82,44 +115,48 @@ namespace queue {
 			last_addr->ptr = new Node(obj, nullptr);
 			last_addr = last_addr->ptr;
 		}
-		type& pop() {
-			if (empty())
-				throw queue_empty_error();
-			Node* temp = base_addr;
-			type* value = temp->data;
-			base_addr = temp->ptr;
-			if (!base_addr)
-				last_addr = nullptr;
-			delete temp;
-			length--;
-			return *value;
-		}
-		type& front() const {
-			if (empty())
-				throw queue_empty_error();
-			return *base_addr->data;
-		}
-		Iterator begin() {
-			return Iterator(base_addr);
-		}
-		Iterator end() {
-			return Iterator(last_addr->ptr);
-		}
-		bool empty() const noexcept {
-			return !length;
-		}
-		size_t size() const noexcept {
+
+		size_t size() const {
 			return length;
 		}
+
+		void swap(LinkedQueue<type>& x) noexcept {
+
+		}
+		
 		operator type& () const {
 			return front();
 		}
+
+		template <typename T> friend bool operator == (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+		template <typename T> friend bool operator != (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+		template <typename T> requires supports_comparison<T>
+		friend bool operator <= (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+		template <typename T> requires supports_comparison<T>
+		friend bool operator >= (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+		template <typename T> requires supports_comparison<T>
+		friend bool operator <  (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+		template <typename T> requires supports_comparison<T>
+		friend bool operator >  (const LinkedQueue<T>& lhs, const LinkedQueue<T>& rhs) {
+			
+		}
+
 		friend auto operator << (std::ostream& os, LinkedQueue const& obj) -> std::ostream& {
-			std::cout << "[";
+			os << "[";
 			index_t i = 0;
 			for (Node* addr = obj.base_addr; addr; addr = addr->ptr, i++)
-				std::cout << *(addr->data) << ((i != obj.size() - 1) ? ", " : "");
-			std::cout << "]";
+				os << *(addr->data) << ((i != obj.size() - 1) ? ", " : "");
+			os << "]";
 			return os;
 		}
 	};
@@ -169,10 +206,10 @@ namespace queue {
 			return front();
 		}
 		friend auto operator << (std::ostream& os, ArrayQueue const& obj) -> std::ostream& {
-			std::cout << "[";
+			os << "[";
 			for (index_t i = 0; i < obj.length; i++)
-				std::cout << obj.base_addr[i] << ((i != obj.length - 1) ? ", " : "");
-			std::cout << "]";
+				os << obj.base_addr[i] << ((i != obj.length - 1) ? ", " : "");
+			os << "]";
 			return os;
 		}
 	};
