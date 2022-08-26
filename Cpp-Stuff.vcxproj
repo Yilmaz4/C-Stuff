@@ -22,6 +22,7 @@
     <ClInclude Include="src\data_structures\array.h" />
     <ClInclude Include="src\data_structures\graph.h" />
     <ClInclude Include="src\data_structures\linkedlist.h" />
+    <ClInclude Include="src\data_structures\matrix.h" />
     <ClInclude Include="src\data_structures\queue.h" />
     <ClInclude Include="src\data_structures\stack.h" />
     <ClInclude Include="src\data_structures\string.h" />
