@@ -41,6 +41,15 @@ namespace string {
 	};
 
 	template <typename char_t> requires std::convertible_to<char_t, char32_t>
+	class BasicString final {
+		char_t* base = nullptr;
+		size_t capacity = 0;
+		size_t size = 0;
+	public:
+
+	};
+
+	template <typename char_t> requires std::convertible_to<char_t, char32_t>
 	class BasicLinkedString final {
 		struct Node final {
 			Node(const char_t data_p, Node* const ptr_p, Node* const prv_p) {
