@@ -27,7 +27,7 @@
     <ClInclude Include="src\data_structures\stack.h" />
     <ClInclude Include="src\data_structures\string.h" />
     <ClInclude Include="src\data_structures\tree.h" />
-    <ClInclude Include="src\minimax\minimax.h" />
+    <ClInclude Include="src\minimax\tictactoe.h" />
     <ClInclude Include="src\opengl\EBO.h" />
     <ClInclude Include="src\opengl\shaderClass.h" />
     <ClInclude Include="src\opengl\VAO.h" />
@@ -44,6 +44,7 @@
     <ClCompile Include="src\opengl\opengl.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="src\opengl\default.frag" />
     <None Include="src\opengl\default.vert" />
   </ItemGroup>

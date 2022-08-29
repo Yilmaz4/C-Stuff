@@ -72,7 +72,7 @@
     <ClInclude Include="src\data_structures\matrix.h">
       <Filter>Header Files\data-structures</Filter>
     </ClInclude>
-    <ClInclude Include="src\minimax\minimax.h">
+    <ClInclude Include="src\minimax\tictactoe.h">
       <Filter>Header Files\minimax</Filter>
     </ClInclude>
   </ItemGroup>
@@ -109,5 +109,6 @@
     <None Include="src\opengl\default.vert">
       <Filter>Resource Files\opengl</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>
