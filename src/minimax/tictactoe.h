@@ -10,12 +10,6 @@
 #include <algorithm>
 #include <cctype>
 
-#define KEY_ENTER 10
-#define KEY_UP 72
-#define KEY_DOWN 80
-#define KEY_LEFT 75
-#define KEY_RIGHT 77
-
 #undef max
 #undef min
 
@@ -46,15 +40,17 @@ void pause() {
 	SetConsoleMode(hstdin, mode);
 }
 
+#define KEY_ENTER 10
+#define KEY_UP 72
+#define KEY_DOWN 80
+#define KEY_LEFT 75
+#define KEY_RIGHT 77
+
 #define X   +1
 #define O   -1
 #define TIE -2
 
 typedef short Player;
-
-std::map<short, wchar_t> charmap{
-	{0, L' '}, {X, L'X'}, {O, L'O'}
-};
 
 template <typename type>
 concept supports_comparison = requires(type obj1, type obj2) {
@@ -81,6 +77,15 @@ struct game_not_over : public std::exception {
 	virtual const char* what() const noexcept {
 		return "The game is not over";
 	}
+};
+
+std::map<short, short> scores{
+	{X, +10},
+	{O, -10},
+	{TIE, 0}
+};
+std::map<short, wchar_t> charmap{
+	{0, L' '}, {X, L'X'}, {O, L'O'}
 };
 
 class Board {
@@ -176,7 +181,7 @@ public:
 		case O * 3:
 			return O;
 		}
-		
+
 		// Check if the game is a tie
 		for (short x = 0; x < 3; x++) {
 			for (short y = 0; y < 3; y++) {
@@ -203,7 +208,7 @@ public:
 		SetConsoleCursorPosition(output, position);
 
 		clear_console();
-		
+
 		std::wcout << L"    1   2   3" << std::endl << L"  ┌───┬───┬───┐" << std::endl << std::flush;
 		for (short x = 0; x < 3; x++) {
 			std::wcout << x + 1 << std::flush;
@@ -218,12 +223,6 @@ public:
 		}
 		std::wcout << std::flush;
 	}
-};
-
-std::map<short, short> scores {
-	{X, +10},
-	{O, -10},
-	{TIE, 0}
 };
 
 int minimax(Board board, uint64_t depth, Player player) {
@@ -253,7 +252,7 @@ public:
 		std::wcout.imbue(std::locale("en_US.utf8"));
 
 		SetCursor(LoadCursorW(NULL, IDC_HAND));
-		
+
 		while (true) {
 			start();
 		}
@@ -306,7 +305,7 @@ public:
 	}
 
 	void play() noexcept {
- 		clear_console();
+		clear_console();
 		unsigned int choice = 0;
 		std::wcout << L"Who should start first? < X >" << std::flush;
 
@@ -427,9 +426,11 @@ public:
 				for (; y > 0; y--) {
 					if (!board.is_cell_empty(y - 1, x) && y == 1 || y == 2 && !board.is_cell_empty(y - 1, x) && !board.is_cell_empty(y - 2, x)) {
 						break;
-					} else if (!board.is_cell_empty(y - 1, x) && y != 1) {
+					}
+					else if (!board.is_cell_empty(y - 1, x) && y != 1) {
 						continue;
-					} else {
+					}
+					else {
 						y--;
 						break;
 					}
@@ -440,9 +441,11 @@ public:
 				for (; y + 1 < 3; y++) {
 					if (!board.is_cell_empty(y + 1, x) && y == 1) {
 						break;
-					} else if (!board.is_cell_empty(y + 1, x) && y != 2) {
+					}
+					else if (!board.is_cell_empty(y + 1, x) && y != 2) {
 						continue;
-					} else {
+					}
+					else {
 						y++;
 						break;
 					}
@@ -453,9 +456,11 @@ public:
 				for (; x + 1 < 3; x++) {
 					if (!board.is_cell_empty(y, x + 1) && x == 1 || x == 0 && !board.is_cell_empty(y, x + 1) && !board.is_cell_empty(y, x + 2)) {
 						break;
-					} else if (!board.is_cell_empty(y, x + 1)) {
+					}
+					else if (!board.is_cell_empty(y, x + 1)) {
 						continue;
-					} else {
+					}
+					else {
 						x++;
 						break;
 					}
@@ -466,9 +471,11 @@ public:
 				for (; x > 0; x--) {
 					if (!board.is_cell_empty(y, x - 1) && x == 1 || x == 2 && !board.is_cell_empty(y, x - 1) && !board.is_cell_empty(y, x - 2)) {
 						break;
-					} else if (!board.is_cell_empty(y, x - 1)) {
+					}
+					else if (!board.is_cell_empty(y, x - 1)) {
 						continue;
-					} else {
+					}
+					else {
 						x--;
 						break;
 					}
