@@ -27,6 +27,7 @@
     <ClInclude Include="src\data_structures\stack.h" />
     <ClInclude Include="src\data_structures\string.h" />
     <ClInclude Include="src\data_structures\tree.h" />
+    <ClInclude Include="src\minimax\minimax.h" />
     <ClInclude Include="src\opengl\EBO.h" />
     <ClInclude Include="src\opengl\shaderClass.h" />
     <ClInclude Include="src\opengl\VAO.h" />
@@ -38,6 +39,7 @@
     <ClCompile Include="..\OpenGLTest\VAO.cpp" />
     <ClCompile Include="..\OpenGLTest\VBO.cpp" />
     <ClCompile Include="src\data_structures\main.cpp" />
+    <ClCompile Include="src\minimax\minimax.cpp" />
     <ClCompile Include="src\opengl\glad.c" />
     <ClCompile Include="src\opengl\opengl.cpp" />
   </ItemGroup>

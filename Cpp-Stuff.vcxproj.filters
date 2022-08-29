@@ -28,6 +28,12 @@
     <Filter Include="Source Files\data-structures">
       <UniqueIdentifier>{e309d7e6-857f-44c7-8460-21707711a167}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\minimax">
+      <UniqueIdentifier>{f9778c74-45ca-4abd-83eb-83618473c588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\minimax">
+      <UniqueIdentifier>{3ee397ca-e1b4-4a58-a61b-c4fa87286f82}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\data_structures\array.h">
@@ -66,6 +72,9 @@
     <ClInclude Include="src\data_structures\matrix.h">
       <Filter>Header Files\data-structures</Filter>
     </ClInclude>
+    <ClInclude Include="src\minimax\minimax.h">
+      <Filter>Header Files\minimax</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\opengl\glad.c">
@@ -88,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="src\opengl\opengl.cpp">
       <Filter>Source Files\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="src\minimax\minimax.cpp">
+      <Filter>Source Files\minimax</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
