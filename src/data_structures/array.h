@@ -124,11 +124,20 @@ namespace array {
 			return *base;
 		}
 
-		constexpr size_t max_size() noexcept {
+		bool has(type& obj) const {
+			for (size_t i = 0; i < size(); i++) {
+				if (operator[](i) == obj) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		constexpr size_t max_size() const noexcept {
 			return length;
 		}
 
-		constexpr size_t size() noexcept {
+		constexpr size_t size() const noexcept {
 			return length;
 		}
 
