@@ -13,7 +13,8 @@
 using namespace tree;
 using namespace string;
 
-int main(int argc, char* argv[]) {
+int datastructures_main(int argc, char* argv[]) {
 	LinkedString str = std::to_string(60);
 	std::cout << str;
+	return 0;
 }
